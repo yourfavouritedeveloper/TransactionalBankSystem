@@ -1,0 +1,20 @@
+server:
+  port: 8081
+
+
+spring:
+  application:
+    name: command-service
+
+  profiles:
+    active: local
+
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+

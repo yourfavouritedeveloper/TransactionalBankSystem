@@ -25,6 +25,8 @@ bin/
 .env
 out/
 !**/src/main/**/out/
+**/application-local.yml
+
 !**/src/test/**/out/
 
 ### NetBeans ###

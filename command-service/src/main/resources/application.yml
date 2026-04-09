@@ -18,3 +18,9 @@ spring:
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yml
 
+
+jwt:
+  secret-key: ${SECRET_KEY}
+  access-expiration: ${ACCESS_EXPIRATION}
+  refresh-expiration: ${REFRESH_EXPIRATION}
+

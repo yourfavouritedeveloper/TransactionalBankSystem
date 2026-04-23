@@ -16,13 +16,13 @@ import java.util.function.Function;
 @Component
 public class JwtService {
 
-    @Value("${spring.jwt.secret}")
+    @Value("${jwt.secret-key}")
     private String secretKey;
 
-    @Value("${spring.jwt.accessTokenExpiration}")
+    @Value("${jwt.access-expiration}")
     private Long accessTokenExpiration;
 
-    @Value("${spring.jwt.refreshTokenExpiration}")
+    @Value("${jwt.refresh-expiration}")
     private Long refreshTokenExpiration;
 
 
@@ -34,7 +34,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
-                .signWith(getSecretKey(), SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, getSecretKey())
                 .compact();
     }
 
@@ -46,7 +46,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration))
-                .signWith(getSecretKey(), SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, getSecretKey())
                 .compact();
     }
 
@@ -77,7 +77,6 @@ public class JwtService {
     public Claims extractClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(getSecretKey())
-                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }

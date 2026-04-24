@@ -11,4 +11,20 @@ public class GlobalExceptionHandler {
     public String handleUserNotFoundException(UserNotFoundException e) {
         return e.getMessage();
     }
+
+    @ExceptionHandler(PasswordDoesNotMatchException.class)
+    public String handlePasswordDoesNotMatchException(PasswordDoesNotMatchException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    public String handleRefreshTokenNotFoundException(RefreshTokenNotFoundException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(InvalidValidationException.class)
+    public String handleInvalidValidationException(InvalidValidationException e) {
+        return e.getMessage();
+    }
+
 }

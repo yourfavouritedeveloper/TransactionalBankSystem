@@ -25,7 +25,7 @@ public class RefreshToken {
     private UUID id;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String refreshToken;

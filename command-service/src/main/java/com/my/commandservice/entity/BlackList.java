@@ -26,7 +26,7 @@ public class BlackList {
     private String token;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @CreationTimestamp

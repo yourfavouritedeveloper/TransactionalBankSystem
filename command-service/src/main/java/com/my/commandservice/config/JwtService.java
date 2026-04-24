@@ -77,7 +77,8 @@ public class JwtService {
     public Claims extractClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(getSecretKey())
-                .parseClaimsJws(token)
+                .build()
+                .parseSignedClaims(token)
                 .getBody();
     }
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1776991075527-1" author="HP">
+        <createTable tableName="black-list">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_black-list"/>
+            </column>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="user_id" type="UUID"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1776991075527-2" author="HP">
+        <createTable tableName="refresh-tokens">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_refresh-tokens"/>
+            </column>
+            <column name="user_id" type="UUID"/>
+            <column name="refresh_token" type="VARCHAR(255)"/>
+            <column name="role" type="SMALLINT"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1776991075527-3" author="HP">
+        <createTable tableName="users">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="full_name" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="SMALLINT"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1776991075527-4" author="HP">
+        <addUniqueConstraint columnNames="user_id" constraintName="uc_black-list_user" tableName="black-list"/>
+    </changeSet>
+    <changeSet id="1776991075527-5" author="HP">
+        <addUniqueConstraint columnNames="user_id" constraintName="uc_refresh-tokens_user" tableName="refresh-tokens"/>
+    </changeSet>
+    <changeSet id="1776991075527-6" author="HP">
+        <addUniqueConstraint columnNames="username" constraintName="uc_users_username" tableName="users"/>
+    </changeSet>
+    <changeSet id="1776991075527-7" author="HP">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="black-list"
+                                 constraintName="FK_BLACK-LIST_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1776991075527-8" author="HP">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="refresh-tokens"
+                                 constraintName="FK_REFRESH-TOKENS_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+</databaseChangeLog>

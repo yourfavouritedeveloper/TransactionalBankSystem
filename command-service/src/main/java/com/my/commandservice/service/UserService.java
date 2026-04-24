@@ -17,7 +17,6 @@ import com.my.commandservice.exceptions.UserNotFoundException;
 import com.my.commandservice.repository.BlackListRepository;
 import com.my.commandservice.repository.RefreshTokenRepository;
 import com.my.commandservice.repository.UserRepository;
-import io.jsonwebtoken.security.Password;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -93,7 +92,7 @@ public class UserService {
         }
 
         if(refreshTokenRepository.findByUser(user)
-                .orElseThrow(() -> new RefreshTokenNotFoundException("Refresh token with provided user does not exist")) == null
+                .orElse(null) != null
         ) {
             //todo: Add a logic that can log user about incoming danger of login from different device (like google)
             throw new UserNotFoundException("More than 1 login in different devices is not being supported yet!");

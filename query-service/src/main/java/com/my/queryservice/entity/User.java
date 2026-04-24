@@ -1,6 +1,6 @@
-package com.my.commandservice.entity;
+package com.my.queryservice.entity;
 
-import com.my.commandservice.entity.enumeration.Role;
+import com.my.queryservice.entity.enumeration.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

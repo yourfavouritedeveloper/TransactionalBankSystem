@@ -22,9 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,28 +34,6 @@ public class UserService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional(readOnly = true)
-    public UserResponse findById(UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return toUserResponse(user);
-    }
-
-    @Transactional(readOnly = true)
-    public UserResponse findByUsername(String username) {
-        User user = (User) userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return toUserResponse(user);
-    }
-
-    @Transactional(readOnly = true)
-    public List<UserResponse> findAll() {
-        List<User> users = userRepository.findAll();
-
-        return users.stream().map(this::toUserResponse).collect(Collectors.toList());
-    }
 
 
     @Transactional

@@ -1,0 +1,23 @@
+server:
+  port: 8082
+
+
+spring:
+  application:
+    name: query-service
+
+  profiles:
+    active: local
+
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+
+jwt:
+  secret-key: ${SECRET_KEY}
+  access-expiration: ${ACCESS_EXPIRATION}
+  refresh-expiration: ${REFRESH_EXPIRATION}
+

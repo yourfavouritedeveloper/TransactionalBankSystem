@@ -30,6 +30,7 @@ public class RefreshToken {
 
     private String refreshToken;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @CreationTimestamp

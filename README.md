@@ -1,8 +1,13 @@
 # 🏦 Transactional Bank System
  
 > A scalable transactional banking backend that handles the full transaction lifecycle — from initiation and authorization to settlement and posting.
- 
-Built with **Java** · **Spring Boot** · **PostgreSQL** · **Kafka** · **Redis**
+
+![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-brightgreen?logo=springboot)
+![Kafka](https://img.shields.io/badge/Apache_Kafka-3.x-black?logo=apachekafka)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue?logo=postgresql)
+![Redis](https://img.shields.io/badge/Redis-7+-red?logo=redis)
+![License](https://img.shields.io/badge/License-MIT-yellow)
  
 ---
  
@@ -181,7 +186,7 @@ A dedicated **Mortgage** module aligned with Azerbaijani housing finance regulat
  
 #### 5.1 Deposit Types
 - **Demand Deposits** — Standard current/checking accounts with no lock-in
-- **Term Deposits (Müddətli Depozit)** — Fixed-term deposits with guaranteed interest rates (30 days to 3 years)
+- **Term Deposits** — Fixed-term deposits with guaranteed interest rates (30 days to 3 years)
 - **Savings Accounts** — Higher-yield accounts with limited monthly withdrawals
 - **Foreign Currency Deposits** — AZN, USD, EUR term deposits with currency-matching interest
 #### 5.2 Deposit Features

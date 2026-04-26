@@ -6,14 +6,13 @@ import com.my.commandservice.dto.request.RegisterRequest;
 import com.my.commandservice.dto.request.UserRequest;
 import com.my.commandservice.dto.response.AuthResponse;
 import com.my.commandservice.dto.response.UserResponse;
+import com.my.commandservice.entity.Account;
 import com.my.commandservice.entity.BlackList;
 import com.my.commandservice.entity.RefreshToken;
 import com.my.commandservice.entity.User;
 import com.my.commandservice.entity.enumeration.Role;
-import com.my.commandservice.exceptions.InvalidValidationException;
-import com.my.commandservice.exceptions.PasswordDoesNotMatchException;
-import com.my.commandservice.exceptions.RefreshTokenNotFoundException;
-import com.my.commandservice.exceptions.UserNotFoundException;
+import com.my.commandservice.exceptions.*;
+import com.my.commandservice.repository.AccountRepository;
 import com.my.commandservice.repository.BlackListRepository;
 import com.my.commandservice.repository.RefreshTokenRepository;
 import com.my.commandservice.repository.UserRepository;
@@ -29,6 +28,7 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final BlackListRepository blackListRepository;
     private final JwtService jwtService;
@@ -110,7 +110,14 @@ public class UserService {
 
     @Transactional
     public void delete(UUID id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        Account account = accountRepository.findByUser(user).
+                orElseThrow(() -> new AccountNotFoundException("Account not found"));
+
+        accountRepository.delete(account);
+        userRepository.delete(user);
     }
 
 
@@ -183,7 +190,6 @@ public class UserService {
         return UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .password(user.getPassword())
                 .fullName(user.getFullName())
                 .email(user.getEmail())
                 .build();

@@ -27,4 +27,14 @@ public class GlobalExceptionHandler {
         return e.getMessage();
     }
 
+    @ExceptionHandler(AccountNotFoundException.class)
+    public String handleAccountNotFoundException(AccountNotFoundException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(InvalidAccountStatusException.class)
+    public String handleInvalidAccountStatusException(InvalidAccountStatusException e) {
+        return e.getMessage();
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.my.queryservice.repository;
+package com.my.queryservice.repository.jpa;
 
 import com.my.queryservice.entity.Account;
 import com.my.queryservice.entity.User;

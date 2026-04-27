@@ -1,4 +1,4 @@
-package com.my.queryservice.repository;
+package com.my.queryservice.repository.jpa;
 
 import com.my.queryservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

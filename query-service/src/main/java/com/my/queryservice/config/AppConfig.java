@@ -1,6 +1,6 @@
 package com.my.queryservice.config;
 
-import com.my.queryservice.repository.UserRepository;
+import com.my.queryservice.repository.jpa.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

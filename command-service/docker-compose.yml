@@ -14,5 +14,16 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql
 
+  redis:
+    image: redis:7
+    container_name: redis-cache
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    command: [ "redis-server", "--appendonly", "yes" ]
+
 volumes:
   pgdata:
+  redisdata:

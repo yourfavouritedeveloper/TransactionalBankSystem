@@ -1,0 +1,29 @@
+package com.my.commandservice.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ErrorResponse {
+
+    private String message;
+
+    private int status;
+
+    private long timestamp;
+
+
+    public ErrorResponse(String message, int status) {
+        this.message = message;
+        this.status = status;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+
+
+}

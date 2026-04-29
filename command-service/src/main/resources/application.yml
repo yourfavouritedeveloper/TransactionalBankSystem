@@ -29,3 +29,6 @@ jwt:
   access-expiration: ${ACCESS_EXPIRATION}
   refresh-expiration: ${REFRESH_EXPIRATION}
 
+exchange:
+  api-key: ${EXCHANGE_API_KEY}
+

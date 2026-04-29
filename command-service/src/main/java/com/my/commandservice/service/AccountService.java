@@ -1,6 +1,7 @@
 package com.my.commandservice.service;
 
 import com.my.commandservice.dto.request.AccountRequest;
+import com.my.commandservice.dto.request.UpdateAccountRequest;
 import com.my.commandservice.dto.response.AccountResponse;
 import com.my.commandservice.dto.response.UserResponse;
 import com.my.commandservice.entity.Account;
@@ -36,6 +37,7 @@ public class AccountService {
         Account account = Account.builder()
                 .type(accountRequest.getType())
                 .iban(generateIban())
+                .currency(accountRequest.getCurrency())
                 .user(user)
                 .build();
 
@@ -60,6 +62,20 @@ public class AccountService {
         account.setStatus(status);
         accountRepository.save(account);
 
+        return toAccountResponse(account);
+    }
+
+    @Transactional
+    public AccountResponse update(UUID id, UpdateAccountRequest accountRequest) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+
+        if(accountRequest.getType() != null) account.setType(accountRequest.getType());
+        if(accountRequest.getCurrency() != null) account.setCurrency(accountRequest.getCurrency());
+        if(accountRequest.getBalance() != null) account.setBalance(accountRequest.getBalance());
+        if(accountRequest.getStatus() != null) account.setStatus(accountRequest.getStatus());
+
+        accountRepository.save(account);
         return toAccountResponse(account);
     }
 
@@ -104,6 +120,7 @@ public class AccountService {
                 .status(account.getStatus())
                 .iban(account.getIban())
                 .type(account.getType())
+                .currency(account.getCurrency())
                 .user(toUserResponse(account.getUser()))
                 .build();
     }

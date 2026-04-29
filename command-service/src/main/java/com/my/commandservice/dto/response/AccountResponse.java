@@ -2,6 +2,7 @@ package com.my.commandservice.dto.response;
 
 import com.my.commandservice.entity.enumeration.AccountStatus;
 import com.my.commandservice.entity.enumeration.AccountType;
+import com.my.commandservice.entity.enumeration.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,8 @@ public class AccountResponse {
     private AccountStatus status;
 
     private AccountType type;
+
+    private Currency currency;
 
     private UserResponse user;
 }

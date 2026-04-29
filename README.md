@@ -32,7 +32,7 @@
  
 ## 🔍 Overview
  
-TransactionalBankSystem is a backend platform designed to power modern digital banking operations. It follows a **CQRS (Command Query Responsibility Segregation)** pattern, separating write operations (`command-service`) from read operations (`query-service`) to ensure high availability and data consistency at scale.
+Transactional Bank System is a backend platform designed to power modern digital banking operations. It follows a **CQRS (Command Query Responsibility Segregation)** pattern, separating write operations (`command-service`) from read operations (`query-service`) to ensure high availability and data consistency at scale.
  
 The system is built to support the full financial transaction lifecycle: account creation, fund movement, settlement, reconciliation, and audit logging — all with event-driven architecture powered by Apache Kafka.
  

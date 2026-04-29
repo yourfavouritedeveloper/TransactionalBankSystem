@@ -1,5 +1,6 @@
-package com.my.commandservice.dto.response;
+package com.my.commandservice.dto.request;
 
+import com.my.commandservice.dto.response.AccountResponse;
 import com.my.commandservice.entity.enumeration.TransactionDirection;
 import com.my.commandservice.entity.enumeration.TransactionStatus;
 import com.my.commandservice.entity.enumeration.TransactionType;
@@ -12,16 +13,14 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionResponse {
+@Builder
+public class UpdateTransactionRequest {
 
-    private UUID id;
+    private UUID fromAccountId;
 
-    private AccountResponse fromAccount;
-
-    private AccountResponse toAccount;
+    private UUID toAccountId;
 
     private BigDecimal amount;
 
@@ -30,5 +29,4 @@ public class TransactionResponse {
     private TransactionStatus status;
 
     private TransactionDirection direction;
-
 }

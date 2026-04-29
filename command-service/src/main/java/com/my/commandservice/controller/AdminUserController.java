@@ -1,31 +1,26 @@
 package com.my.commandservice.controller;
 
-import com.my.commandservice.dto.request.UpdateUserRequest;
 import com.my.commandservice.dto.request.UserRequest;
 import com.my.commandservice.dto.response.UserResponse;
 import com.my.commandservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/admin/user")
 @RequiredArgsConstructor
-public class UserController {
+public class AdminUserController {
 
     private final UserService userService;
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable UUID id, @Valid @RequestBody UpdateUserRequest userRequest) {
-        return ResponseEntity.ok(userService.updateUser(id,userRequest));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable UUID id) {
-        userService.delete(id);
-        return ResponseEntity.ok("User successfully deleted");
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserResponse> update(@PathVariable("id") UUID id, @Valid @RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(userService.update(id, userRequest));
     }
 }

@@ -3,6 +3,7 @@ package com.my.commandservice.service;
 import com.my.commandservice.config.JwtService;
 import com.my.commandservice.dto.request.LoginRequest;
 import com.my.commandservice.dto.request.RegisterRequest;
+import com.my.commandservice.dto.request.UpdateUserRequest;
 import com.my.commandservice.dto.request.UserRequest;
 import com.my.commandservice.dto.response.AuthResponse;
 import com.my.commandservice.dto.response.UserResponse;
@@ -91,6 +92,20 @@ public class UserService {
                 .build();
     }
 
+
+    @Transactional
+    public UserResponse updateUser(UUID id, UpdateUserRequest userRequest) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if(userRequest.getUsername() != null) user.setUsername(userRequest.getUsername());
+        if(userRequest.getEmail() != null) user.setEmail(userRequest.getEmail());
+        if(userRequest.getPassword() != null) user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        if(userRequest.getFullName() != null) user.setFullName(userRequest.getFullName());
+
+        userRepository.save(user);
+        return toUserResponse(user);
+    }
 
     @Transactional
     public UserResponse update(UUID id, UserRequest userRequest) {

@@ -1,28 +1,28 @@
 package com.my.commandservice.dto.request;
 
+import com.my.commandservice.entity.enumeration.AccountStatus;
 import com.my.commandservice.entity.enumeration.AccountType;
 import com.my.commandservice.entity.enumeration.Currency;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AccountRequest {
+public class UpdateAccountRequest {
 
-    @NotNull(message = "Account Type is required")
+    private BigDecimal balance;
+
+    private AccountStatus status;
+
     private AccountType type;
 
-    @NotNull(message = "User id is required")
-    private UUID userId;
-
-    @NotNull(message = "Currency is required")
     private Currency currency;
+
 
 }

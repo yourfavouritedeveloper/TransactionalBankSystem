@@ -2,7 +2,12 @@ package com.my.commandservice.entity.enumeration;
 
 public enum TransactionType {
     DEPOSIT,
-    WITHDRAW,
-    TRANSFER_IN,
-    TRANSFER_OUT
+    WITHDRAWAL,
+    TRANSFER,
+    REFUND,
+    REVERSAL,
+    FEE,
+    HOLD,
+    RELEASE,
+    SCHEDULED
 }

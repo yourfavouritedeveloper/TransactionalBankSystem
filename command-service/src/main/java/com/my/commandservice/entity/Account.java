@@ -2,6 +2,7 @@ package com.my.commandservice.entity;
 
 import com.my.commandservice.entity.enumeration.AccountStatus;
 import com.my.commandservice.entity.enumeration.AccountType;
+import com.my.commandservice.entity.enumeration.Currency;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,9 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     private AccountType type;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

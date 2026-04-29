@@ -1,5 +1,7 @@
 package com.my.commandservice.entity;
 
+import com.my.commandservice.entity.enumeration.Currency;
+import com.my.commandservice.entity.enumeration.TransactionDirection;
 import com.my.commandservice.entity.enumeration.TransactionStatus;
 import com.my.commandservice.entity.enumeration.TransactionType;
 import jakarta.persistence.*;
@@ -41,6 +43,12 @@ public class Transaction {
 
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private TransactionDirection direction;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     @CreationTimestamp
     private Timestamp createdAt;

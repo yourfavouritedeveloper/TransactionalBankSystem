@@ -20,7 +20,7 @@
   - [Core Banking Operations](#1-core-banking-operations)
   - [Fund Transfers](#2-fund-transfers)
   - [Loan Management](#3-loan-management)
-  - [Ipoteka (Mortgage) Module](#4-ipoteka-mortgage-module)
+  - [Mortgage Module](#4-mortgage-module)
   - [Deposit & Savings Products](#5-deposit--savings-products)
   - [Payment Gateway Expansion](#6-payment-gateway-expansion)
   - [Compliance & Auditing](#7-compliance--auditing)

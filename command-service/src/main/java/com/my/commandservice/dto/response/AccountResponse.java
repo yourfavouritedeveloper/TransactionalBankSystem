@@ -24,6 +24,8 @@ public class AccountResponse {
 
     private BigDecimal balance;
 
+    private BigDecimal holdBalance;
+
     private AccountStatus status;
 
     private AccountType type;

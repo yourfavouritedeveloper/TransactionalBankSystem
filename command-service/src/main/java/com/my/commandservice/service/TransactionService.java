@@ -208,14 +208,156 @@ public class TransactionService {
 
 
 
-    
+
+    @Transactional
+    public TransferResponse refund(UUID id) {
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
+
+        Account fromAccount = transaction.getToAccount();
+        Account toAccount = transaction.getFromAccount();
+
+        if (toAccount.getStatus() == AccountStatus.PENDING ||
+                toAccount.getStatus() == AccountStatus.BLOCKED ||
+                toAccount.getStatus() == AccountStatus.CLOSED ||
+                fromAccount.getStatus() == AccountStatus.PENDING ||
+                fromAccount.getStatus() == AccountStatus.BLOCKED ||
+                fromAccount.getStatus() == AccountStatus.CLOSED) {
+            throw new InvalidAccountStatusException("Account is not available for given operation");
+        }
+
+        BigDecimal amountOf = (!fromAccount.getCurrency().equals(toAccount.getCurrency())) ?
+                currencyService.convert(toAccount.getCurrency(),fromAccount.getCurrency(),transaction.getAmount())
+                : transaction.getAmount();
+
+        if (fromAccount.getBalance().compareTo(transaction.getAmount()) < 0) {
+            throw new InsufficientBalanceException("Insufficient balance in account for that operation");
+        }
+
+        Transaction fromRefund = Transaction.builder()
+                .fromAccount(fromAccount)
+                .amount(transaction.getAmount())
+                .type(TransactionType.REFUND)
+                .direction(TransactionDirection.OUT)
+                .status(TransactionStatus.PENDING)
+                .currency(fromAccount.getCurrency())
+                .build();
+
+        Transaction toRefund = Transaction.builder()
+                .toAccount(toAccount)
+                .amount(amountOf)
+                .type(TransactionType.REFUND)
+                .direction(TransactionDirection.IN)
+                .status(TransactionStatus.PENDING)
+                .currency(toAccount.getCurrency())
+                .build();
+
+        transactionRepository.save(fromRefund);
+        transactionRepository.save(toRefund);
+
+        fromAccount.setBalance(fromAccount.getBalance().subtract(transaction.getAmount()));
+        toAccount.setBalance(toAccount.getBalance().add(amountOf));
+
+        accountRepository.save(fromAccount);
+        accountRepository.save(toAccount);
+
+        fromRefund.setStatus(TransactionStatus.REFUNDED);
+        toRefund.setStatus(TransactionStatus.REFUNDED);
+
+        transactionRepository.save(fromRefund);
+        transactionRepository.save(toRefund);
+
+        return TransferResponse.builder()
+                .fromTransaction(toTransactionResponse(fromRefund))
+                .toTransaction(toTransactionResponse(toRefund))
+                .status("REFUNDED")
+                .build();
 
 
-    // todo : write the rest of the transaction types
+    }
 
 
 
+    @Transactional
+    public TransactionResponse hold(UUID accountId, BigDecimal amount, Currency currency) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidAmountException("Amount must be greater than zero");
+        }
 
+        Account fromAccount = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+
+        if (fromAccount.getStatus() == AccountStatus.PENDING ||
+                fromAccount.getStatus() == AccountStatus.BLOCKED ||
+                fromAccount.getStatus() == AccountStatus.CLOSED) {
+            throw new InvalidAccountStatusException("Account is not available for given operation");
+        }
+
+        BigDecimal amountOf = (!currency.equals(fromAccount.getCurrency())) ?
+                currencyService.convert(currency,fromAccount.getCurrency(),amount)
+                : amount;
+
+        if (fromAccount.getBalance().compareTo(amountOf) < 0) {
+            throw new InsufficientBalanceException("Insufficient balance in account for that operation");
+        }
+
+        Transaction transaction = Transaction.builder()
+                .fromAccount(fromAccount)
+                .amount(amountOf)
+                .type(TransactionType.HOLD)
+                .direction(TransactionDirection.OUT)
+                .status(TransactionStatus.PENDING)
+                .currency(fromAccount.getCurrency())
+                .build();
+
+        transactionRepository.save(transaction);
+
+        fromAccount.setBalance(fromAccount.getBalance().subtract(amountOf));
+        fromAccount.setHoldBalance(fromAccount.getHoldBalance().add(amountOf));
+        accountRepository.save(fromAccount);
+
+        transaction.setStatus(TransactionStatus.SUCCESS);
+        transactionRepository.save(transaction);
+
+        return toTransactionResponse(transaction);
+    }
+
+
+
+    @Transactional
+    public TransactionResponse release(UUID id) {
+
+        Transaction transaction = transactionRepository.findById(id)
+            .orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
+
+        Account toAccount = transaction.getFromAccount();
+
+        if (toAccount.getStatus() == AccountStatus.PENDING ||
+                toAccount.getStatus() == AccountStatus.BLOCKED ||
+                toAccount.getStatus() == AccountStatus.CLOSED) {
+            throw new InvalidAccountStatusException("Account is not available for given operation");
+        }
+
+        Transaction release = Transaction.builder()
+                .toAccount(toAccount)
+                .amount(transaction.getAmount())
+                .type(TransactionType.RELEASE)
+                .direction(TransactionDirection.IN)
+                .status(TransactionStatus.PENDING)
+                .currency(toAccount.getCurrency())
+                .build();
+
+        transactionRepository.save(release);
+
+        toAccount.setBalance(toAccount.getBalance().add(toAccount.getHoldBalance()));
+        toAccount.setHoldBalance(BigDecimal.ZERO);
+        accountRepository.save(toAccount);
+
+        release.setStatus(TransactionStatus.SUCCESS);
+        transactionRepository.save(release);
+
+        return toTransactionResponse(release);
+    }
 
 
 
@@ -274,6 +416,7 @@ public class TransactionService {
         return AccountResponse.builder()
                 .id(account.getId())
                 .balance(account.getBalance())
+                .holdBalance(account.getHoldBalance())
                 .status(account.getStatus())
                 .iban(account.getIban())
                 .type(account.getType())

@@ -117,6 +117,7 @@ public class AccountService {
         return AccountResponse.builder()
                 .id(account.getId())
                 .balance(account.getBalance())
+                .holdBalance(account.getHoldBalance())
                 .status(account.getStatus())
                 .iban(account.getIban())
                 .type(account.getType())

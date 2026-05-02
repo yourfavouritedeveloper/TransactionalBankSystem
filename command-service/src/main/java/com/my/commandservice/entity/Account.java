@@ -34,6 +34,10 @@ public class Account {
     @Builder.Default
     private BigDecimal balance = BigDecimal.ZERO;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private BigDecimal holdBalance = BigDecimal.ZERO;
+
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private AccountStatus status = AccountStatus.PENDING;

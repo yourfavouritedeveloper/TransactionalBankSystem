@@ -16,5 +16,9 @@ public class GlobalExceptionHandler {
         return e.getMessage();
     }
 
+    @ExceptionHandler(TransactionNotFoundException.class)
+    public String handleTransactionNotFoundException(TransactionNotFoundException e) {
+        return e.getMessage();
+    }
 
 }

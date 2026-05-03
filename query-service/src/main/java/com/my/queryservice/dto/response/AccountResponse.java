@@ -2,6 +2,7 @@ package com.my.queryservice.dto.response;
 
 import com.my.queryservice.entity.enumeration.AccountStatus;
 import com.my.queryservice.entity.enumeration.AccountType;
+import com.my.queryservice.entity.enumeration.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,9 +24,13 @@ public class AccountResponse {
 
     private BigDecimal balance;
 
+    private BigDecimal holdBalance;
+
     private AccountStatus status;
 
     private AccountType type;
+
+    private Currency currency;
 
     private UserResponse user;
 }

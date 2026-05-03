@@ -62,6 +62,7 @@ public class AccountService {
         return toAccountResponse(account);
     }
 
+    @Transactional(readOnly = true)
     public List<AccountResponse> findAll(AccountStatus status, AccountType type) {
         List<Account> cached = accountRedisRepository.findAll();
 

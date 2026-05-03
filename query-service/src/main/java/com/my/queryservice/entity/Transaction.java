@@ -1,8 +1,9 @@
 package com.my.queryservice.entity;
 
-import com.my.queryservice.entity.enumeration.AccountStatus;
-import com.my.queryservice.entity.enumeration.AccountType;
 import com.my.queryservice.entity.enumeration.Currency;
+import com.my.queryservice.entity.enumeration.TransactionDirection;
+import com.my.queryservice.entity.enumeration.TransactionStatus;
+import com.my.queryservice.entity.enumeration.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -20,42 +22,40 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "accounts")
-public class Account {
+@Table(name = "transactions")
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique = true, nullable = false)
-    private String iban;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_account_id")
+    private Account fromAccount;
 
-    @Column(nullable = false)
-    @Builder.Default
-    private BigDecimal balance = BigDecimal.ZERO;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_account_id")
+    private Account toAccount;
 
-    @Column(nullable = false)
-    @Builder.Default
-    private BigDecimal holdBalance = BigDecimal.ZERO;
-
-    @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private AccountStatus status = AccountStatus.PENDING;
+    private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    private AccountType type;
+    private TransactionType type;
+
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private TransactionDirection direction;
+
+    private LocalDateTime scheduledAt;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
     @CreationTimestamp
     private Timestamp createdAt;
 
     @UpdateTimestamp
     private Timestamp updatedAt;
-
 }

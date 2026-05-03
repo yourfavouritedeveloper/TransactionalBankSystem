@@ -43,6 +43,11 @@ public class GlobalExceptionHandler {
         return buildResponse(e.getMessage(), 400);
     }
 
+    @ExceptionHandler(InvalidAccountTypeException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidAccountTypeException(InvalidAccountTypeException e) {
+        return buildResponse(e.getMessage(), 400);
+    }
+
     @ExceptionHandler(InvalidAmountException.class)
     public ResponseEntity<ErrorResponse> handleInvalidAmountException(InvalidAmountException e) {
         return buildResponse(e.getMessage(), 400);
@@ -50,6 +55,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientBalanceException.class)
     public ResponseEntity<ErrorResponse> handleInsufficientBalanceException(InsufficientBalanceException e) {
+        return buildResponse(e.getMessage(), 400);
+    }
+
+    @ExceptionHandler(InvalidTransactionStatusException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTransactionStatusException(InvalidTransactionStatusException e) {
         return buildResponse(e.getMessage(), 400);
     }
 

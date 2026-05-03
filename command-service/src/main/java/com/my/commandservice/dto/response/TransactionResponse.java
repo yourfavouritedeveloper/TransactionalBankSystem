@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -28,6 +29,8 @@ public class TransactionResponse {
     private TransactionType type;
 
     private TransactionStatus status;
+
+    private LocalDateTime scheduledAt;
 
     private TransactionDirection direction;
 

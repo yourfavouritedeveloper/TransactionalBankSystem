@@ -19,6 +19,13 @@ public class AdminTransactionController {
 
     private final TransactionService transactionService;
 
+
+    @PostMapping("/reversal/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<TransactionResponse> reversal(@PathVariable UUID id, @RequestParam String reason) {
+        return ResponseEntity.ok(transactionService.reversal(id, reason));
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TransactionResponse> update(@PathVariable UUID id, @RequestBody UpdateTransactionRequest transactionRequest) {

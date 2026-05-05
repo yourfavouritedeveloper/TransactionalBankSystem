@@ -596,34 +596,11 @@ public class TransactionService {
                 .status(transaction.getStatus())
                 .direction(transaction.getDirection())
                 .scheduledAt(transaction.getScheduledAt())
-                .fromAccount(toAccountResponse(transaction.getFromAccount()))
-                .toAccount(toAccountResponse(transaction.getToAccount()))
+                .fromAccount(transaction.getFromAccount().getId())
+                .toAccount(transaction.getToAccount().getId())
                 .build();
     }
 
 
 
-    private AccountResponse toAccountResponse(Account account) {
-        return AccountResponse.builder()
-                .id(account.getId())
-                .balance(account.getBalance())
-                .holdBalance(account.getHoldBalance())
-                .status(account.getStatus())
-                .iban(account.getIban())
-                .type(account.getType())
-                .currency(account.getCurrency())
-                .user(toUserResponse(account.getUser()))
-                .build();
-    }
-
-
-
-    private UserResponse toUserResponse(User user) {
-        return UserResponse.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .fullName(user.getFullName())
-                .email(user.getEmail())
-                .build();
-    }
 }

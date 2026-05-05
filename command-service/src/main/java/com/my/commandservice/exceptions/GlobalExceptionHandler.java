@@ -38,6 +38,11 @@ public class GlobalExceptionHandler {
         return buildResponse(e.getMessage(), 404);
     }
 
+    @ExceptionHandler(LoanNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleLoanNotFoundException(LoanNotFoundException e) {
+        return buildResponse(e.getMessage(), 404);
+    }
+
     @ExceptionHandler(InvalidAccountStatusException.class)
     public ResponseEntity<ErrorResponse> handleInvalidAccountStatusException(InvalidAccountStatusException e) {
         return buildResponse(e.getMessage(), 400);

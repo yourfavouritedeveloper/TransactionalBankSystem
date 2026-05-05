@@ -20,9 +20,9 @@ public class TransactionResponse {
 
     private UUID id;
 
-    private AccountResponse fromAccount;
+    private UUID fromAccount;
 
-    private AccountResponse toAccount;
+    private UUID toAccount;
 
     private BigDecimal amount;
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1777941124750-2" author="HP">
+        <createTable tableName="loans">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_loans"/>
+            </column>
+            <column name="loan_number" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="loan_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="principal_amount" type="DECIMAL(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="remaining_balance" type="DECIMAL(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interest_rate" type="DECIMAL(5, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="term_months" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="monthly_payment" type="DECIMAL(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="next_payment_date" type="DATETIME"/>
+            <column name="total_interest_paid" type="DECIMAL(19, 4)"/>
+            <column name="total_amount_paid" type="DECIMAL(19, 4)"/>
+            <column name="missed_payments" type="INT"/>
+            <column name="purpose" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1777941124750-3" author="HP">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="transactions" columnName="scheduled_at"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="transactions">
+            <column name="scheduled_at" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1777941124750-4" author="HP">
+        <addUniqueConstraint columnNames="loan_number" constraintName="uc_loans_loannumber" tableName="loans"/>
+    </changeSet>
+    <changeSet id="1777941124750-5" author="HP">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="loans" constraintName="FK_LOANS_ON_ACCOUNT"
+                                 referencedColumnNames="id" referencedTableName="accounts"/>
+    </changeSet>
+    <changeSet id="1777941124750-1" author="HP">
+        <modifyDataType columnName="hold_balance" newDataType="DECIMAL" tableName="accounts"/>
+    </changeSet>
+
+</databaseChangeLog>

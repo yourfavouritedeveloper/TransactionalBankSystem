@@ -74,6 +74,11 @@ public class Loan {
 
     private String purpose;
 
+    @Builder.Default
+    private Boolean requestChange = Boolean.FALSE;
+
+    private String requestReason;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

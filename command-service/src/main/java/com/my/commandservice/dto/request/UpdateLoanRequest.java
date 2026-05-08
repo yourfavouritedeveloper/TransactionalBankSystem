@@ -1,4 +1,4 @@
-package com.my.commandservice.dto.response;
+package com.my.commandservice.dto.request;
 
 import com.my.commandservice.entity.enumeration.LoanStatus;
 import com.my.commandservice.entity.enumeration.LoanType;
@@ -9,19 +9,13 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoanResponse {
+@Builder
+public class UpdateLoanRequest {
 
-    private UUID id;
-
-    private String loanNumber;
-
-    private UUID account;
 
     private LoanType loanType;
 
@@ -55,6 +49,5 @@ public class LoanResponse {
 
     private String requestReason;
 
-    private LocalDateTime createdAt;
 
 }

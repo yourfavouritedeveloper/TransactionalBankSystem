@@ -1,4 +1,4 @@
-# 🏦 Transactional Bank System
+# Transactional Bank System
  
 > A scalable transactional banking backend that handles the full transaction lifecycle — from initiation and authorization to settlement and posting.
 
@@ -11,7 +11,7 @@
  
 ---
  
-## 📋 Table of Contents
+## Table of Contents
  
 - [Overview](#-overview)
 - [Architecture](#-architecture)
@@ -30,7 +30,7 @@
 - [License](#-license)
 ---
  
-## 🔍 Overview
+## Overview
  
 Transactional Bank System is a backend platform designed to power modern digital banking operations. It follows a **CQRS (Command Query Responsibility Segregation)** pattern, separating write operations (`command-service`) from read operations (`query-service`) to ensure high availability and data consistency at scale.
  
@@ -38,7 +38,7 @@ The system is built to support the full financial transaction lifecycle: account
  
 ---
  
-## 🏗️ Architecture
+## Architecture
  
 ```
 ┌────────────────────────────────────────────────────────────┐
@@ -63,7 +63,7 @@ The system is built to support the full financial transaction lifecycle: account
  
 ---
  
-## ✅ Current Features
+## Current Features
  
 - **Account Management** — Create and manage customer bank accounts
 - **Transaction Lifecycle** — Full pipeline from initiation → authorization → settlement → posting
@@ -74,7 +74,7 @@ The system is built to support the full financial transaction lifecycle: account
 - **Authentication & Authorization** — Secure access control
 ---
  
-## 🚀 Roadmap & Future Plans
+## Roadmap & Future Plans
  
 ### 1. Core Banking Operations
  
@@ -227,7 +227,7 @@ A dedicated **Mortgage** module aligned with Azerbaijani housing finance regulat
 - Export to XBRL for Central Bank submissions
 ---
  
-## 🛠 Tech Stack
+## Tech Stack
  
 | Layer | Technology |
 |---|---|
@@ -243,7 +243,7 @@ A dedicated **Mortgage** module aligned with Azerbaijani housing finance regulat
  
 ---
  
-## 🚀 Getting Started
+## Getting Started
  
 ### Prerequisites
  
@@ -272,7 +272,7 @@ cd query-service
  
 ---
  
-## 📄 License
+## License
  
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
  

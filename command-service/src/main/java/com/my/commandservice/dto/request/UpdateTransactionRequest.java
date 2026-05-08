@@ -1,6 +1,5 @@
 package com.my.commandservice.dto.request;
 
-import com.my.commandservice.dto.response.AccountResponse;
 import com.my.commandservice.entity.enumeration.TransactionDirection;
 import com.my.commandservice.entity.enumeration.TransactionStatus;
 import com.my.commandservice.entity.enumeration.TransactionType;

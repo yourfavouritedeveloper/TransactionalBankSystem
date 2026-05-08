@@ -68,6 +68,12 @@ public class GlobalExceptionHandler {
         return buildResponse(e.getMessage(), 400);
     }
 
+    @ExceptionHandler(LoanNotFinishedException.class)
+    public ResponseEntity<ErrorResponse> handleLoanNotFinishedException(LoanNotFinishedException e) {
+        return buildResponse(e.getMessage(), 500);
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception e) {
         return buildResponse("Internal server error", 500);

@@ -1,15 +1,15 @@
 package com.my.commandservice.service;
 
 import com.my.commandservice.dto.request.LoanRequest;
+import com.my.commandservice.dto.request.RestructureLoanRequest;
+import com.my.commandservice.dto.request.UpdateLoanRequest;
 import com.my.commandservice.dto.response.LoanResponse;
 import com.my.commandservice.entity.Account;
 import com.my.commandservice.entity.Loan;
 import com.my.commandservice.entity.enumeration.AccountStatus;
 import com.my.commandservice.entity.enumeration.LoanStatus;
-import com.my.commandservice.exceptions.AccountNotFoundException;
-import com.my.commandservice.exceptions.InsufficientBalanceException;
-import com.my.commandservice.exceptions.InvalidAccountStatusException;
-import com.my.commandservice.exceptions.LoanNotFoundException;
+import com.my.commandservice.entity.enumeration.LoanType;
+import com.my.commandservice.exceptions.*;
 import com.my.commandservice.repository.AccountRepository;
 import com.my.commandservice.repository.LoanRepository;
 import lombok.RequiredArgsConstructor;
@@ -145,6 +145,129 @@ public class LoanService {
 
         return toLoanResponse(loan);
     }
+
+
+    @Transactional
+    public LoanResponse requestRestructure(UUID id, String reason) {
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new LoanNotFoundException("Loan not found"));
+
+        Account account = loan.getAccount();
+
+        if(account.getStatus() == AccountStatus.BLOCKED ||
+                account.getStatus() == AccountStatus.PENDING ||
+                account.getStatus() == AccountStatus.CLOSED ||
+                account.getStatus() == AccountStatus.FROZEN) {
+            throw new InvalidAccountStatusException("Account status is not eligible for this action");
+        }
+
+        loan.setRequestChange(Boolean.TRUE);
+        loan.setRequestReason(reason);
+        loan.setStatus(LoanStatus.PENDING);
+        loanRepository.save(loan);
+
+        return toLoanResponse(loan);
+
+    }
+
+
+    @Transactional
+    public LoanResponse applyRestructureRequest(UUID id, RestructureLoanRequest loanRequest) {
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new LoanNotFoundException("Loan not found"));
+
+        Account account = loan.getAccount();
+
+        if(account.getStatus() == AccountStatus.BLOCKED ||
+                account.getStatus() == AccountStatus.PENDING ||
+                account.getStatus() == AccountStatus.CLOSED ||
+                account.getStatus() == AccountStatus.FROZEN) {
+            throw new InvalidAccountStatusException("Account status is not eligible for this action");
+        }
+
+        loan.setRequestChange(Boolean.FALSE);
+        loan.setRequestReason("");
+        loan.setStatus(LoanStatus.ACTIVE);
+        if(loanRequest.getLoanType() != null) loan.setLoanType(loanRequest.getLoanType());
+        if(loanRequest.getEndDate() != null) loan.setEndDate(loanRequest.getEndDate());
+        if(loanRequest.getTermMonths() != null) loan.setTermMonths(loanRequest.getTermMonths());
+        if(loanRequest.getNextPaymentDate() != null) loan.setNextPaymentDate(loanRequest.getNextPaymentDate());
+        if(loanRequest.getPurpose() != null) loan.setPurpose(loanRequest.getPurpose());
+        if(loanRequest.getInterestRate() != null) loan.setInterestRate(loanRequest.getInterestRate());
+        if(loanRequest.getPrincipalAmount() != null) loan.setRemainingBalance(loanRequest.getPrincipalAmount());
+        if(loanRequest.getMissedPayments() != null) loan.setMissedPayments(loanRequest.getMissedPayments());
+        if(loanRequest.getMonthlyPayment() != null) loan.setMonthlyPayment(loanRequest.getMonthlyPayment());
+
+        loanRepository.save(loan);
+        return toLoanResponse(loan);
+    }
+
+    @Transactional
+    public LoanResponse update(UUID id, UpdateLoanRequest loanRequest) {
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new LoanNotFoundException("Loan not found"));
+
+        Account account = loan.getAccount();
+
+        if(account.getStatus() == AccountStatus.BLOCKED ||
+                account.getStatus() == AccountStatus.PENDING ||
+                account.getStatus() == AccountStatus.CLOSED ||
+                account.getStatus() == AccountStatus.FROZEN) {
+            throw new InvalidAccountStatusException("Account status is not eligible for this action");
+        }
+
+        if(loanRequest.getRequestChange() != null) loan.setRequestChange(loanRequest.getRequestChange());
+        if(loanRequest.getRequestReason() != null) loan.setRequestReason(loanRequest.getRequestReason());
+        if(loanRequest.getStartDate() != null) loan.setStartDate(loanRequest.getStartDate());
+        if(loanRequest.getStatus() != null) loan.setStatus(loanRequest.getStatus());
+        if(loanRequest.getTotalAmountPaid() != null) loan.setTotalAmountPaid(loanRequest.getTotalAmountPaid());
+        if(loanRequest.getTotalInterestPaid() != null) loan.setTotalInterestPaid(loanRequest.getTotalInterestPaid());
+        if(loanRequest.getLoanType() != null) loan.setLoanType(loanRequest.getLoanType());
+        if(loanRequest.getRemainingBalance() != null) loan.setRemainingBalance(loanRequest.getRemainingBalance());
+        if(loanRequest.getEndDate() != null) loan.setEndDate(loanRequest.getEndDate());
+        if(loanRequest.getTermMonths() != null) loan.setTermMonths(loanRequest.getTermMonths());
+        if(loanRequest.getNextPaymentDate() != null) loan.setNextPaymentDate(loanRequest.getNextPaymentDate());
+        if(loanRequest.getPurpose() != null) loan.setPurpose(loanRequest.getPurpose());
+        if(loanRequest.getInterestRate() != null) loan.setInterestRate(loanRequest.getInterestRate());
+        if(loanRequest.getPrincipalAmount() != null) loan.setRemainingBalance(loanRequest.getPrincipalAmount());
+        if(loanRequest.getMissedPayments() != null) loan.setMissedPayments(loanRequest.getMissedPayments());
+        if(loanRequest.getMonthlyPayment() != null) loan.setMonthlyPayment(loanRequest.getMonthlyPayment());
+
+        loanRepository.save(loan);
+
+        return toLoanResponse(loan);
+    }
+
+    @Transactional
+    public LoanResponse close(UUID id) {
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new LoanNotFoundException("Loan not found"));
+
+        Account account = loan.getAccount();
+
+        if(account.getStatus() == AccountStatus.BLOCKED ||
+                account.getStatus() == AccountStatus.PENDING ||
+                account.getStatus() == AccountStatus.CLOSED ||
+                account.getStatus() == AccountStatus.FROZEN) {
+            throw new InvalidAccountStatusException("Account status is not eligible for this action");
+        }
+
+        if(loan.getRemainingBalance().compareTo(BigDecimal.ZERO) != 0) {
+            throw new LoanNotFinishedException("Remaining balance is not zero");
+        }
+
+        loan.setStatus(LoanStatus.CLOSED);
+        loanRepository.save(loan);
+        return toLoanResponse(loan);
+    }
+
+
+    @Transactional
+    public void delete(UUID id) {
+        loanRepository.deleteById(id);
+    }
+
+
 
     private String generateLoanNumber() {
         String prefix = "LN";

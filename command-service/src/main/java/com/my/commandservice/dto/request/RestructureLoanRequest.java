@@ -1,31 +1,29 @@
-package com.my.commandservice.dto.response;
+package com.my.commandservice.dto.request;
 
+import com.my.commandservice.entity.Account;
 import com.my.commandservice.entity.enumeration.LoanStatus;
 import com.my.commandservice.entity.enumeration.LoanType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoanResponse {
+@Builder
+public class RestructureLoanRequest {
 
-    private UUID id;
-
-    private String loanNumber;
-
-    private UUID account;
 
     private LoanType loanType;
-
-    private LoanStatus status;
 
     private BigDecimal principalAmount;
 
@@ -37,24 +35,13 @@ public class LoanResponse {
 
     private BigDecimal monthlyPayment;
 
-    private LocalDateTime startDate;
-
     private LocalDateTime endDate;
 
     private LocalDateTime nextPaymentDate;
-
-    private BigDecimal totalInterestPaid;
-
-    private BigDecimal totalAmountPaid;
 
     private Integer missedPayments;
 
     private String purpose;
 
-    private Boolean requestChange;
-
-    private String requestReason;
-
-    private LocalDateTime createdAt;
 
 }

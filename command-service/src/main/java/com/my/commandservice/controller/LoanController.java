@@ -1,6 +1,7 @@
 package com.my.commandservice.controller;
 
 import com.my.commandservice.dto.request.LoanRequest;
+import com.my.commandservice.dto.request.RestructureLoanRequest;
 import com.my.commandservice.dto.response.LoanResponse;
 import com.my.commandservice.service.LoanService;
 import jakarta.validation.Valid;
@@ -33,4 +34,11 @@ public class LoanController {
     public ResponseEntity<LoanResponse> earlyPayment(@PathVariable UUID id) {
         return ResponseEntity.ok(loanService.earlyPayment(id));
     }
+
+    @PatchMapping("/{id}/restructure")
+    public ResponseEntity<LoanResponse> requestRestructure(@PathVariable UUID id, @RequestParam String reason) {
+        return ResponseEntity.ok(loanService.requestRestructure(id,reason));
+    }
+
+
 }

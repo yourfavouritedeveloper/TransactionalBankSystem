@@ -18,11 +18,6 @@ public class AdminAccountController {
 
     private final AccountService accountService;
 
-    @GetMapping("/iban/{iban}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AccountResponse> findByIban(@PathVariable String iban) {
-        return ResponseEntity.ok(accountService.findByIban(iban));
-    }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")

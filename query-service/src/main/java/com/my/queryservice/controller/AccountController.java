@@ -4,6 +4,7 @@ import com.my.queryservice.dto.response.AccountResponse;
 import com.my.queryservice.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,11 @@ public class AccountController {
     @GetMapping("/user/{id}")
     public ResponseEntity<AccountResponse> findByUserId(@PathVariable UUID id) {
         return ResponseEntity.ok(accountService.findByUser(id));
+    }
+
+    @GetMapping("/iban/{iban}")
+    public ResponseEntity<AccountResponse> findByIban(@PathVariable String iban) {
+        return ResponseEntity.ok(accountService.findByIban(iban));
     }
 
 

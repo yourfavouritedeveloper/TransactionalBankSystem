@@ -4,6 +4,7 @@ import com.my.commandservice.dto.request.LoanRequest;
 import com.my.commandservice.dto.request.RestructureLoanRequest;
 import com.my.commandservice.dto.request.UpdateLoanRequest;
 import com.my.commandservice.dto.response.LoanResponse;
+import com.my.commandservice.entity.enumeration.LoanStatus;
 import com.my.commandservice.service.LoanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,12 @@ public class AdminLoanController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<LoanResponse> update(@PathVariable UUID id,@Valid @RequestBody UpdateLoanRequest loanRequest) {
         return ResponseEntity.ok(loanService.update(id,loanRequest));
+    }
+
+    @PutMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<LoanResponse> updateStatus(@PathVariable UUID id,@RequestParam LoanStatus status) {
+        return ResponseEntity.ok(loanService.updateStatus(id,status));
     }
 
     @PatchMapping("/{id}")

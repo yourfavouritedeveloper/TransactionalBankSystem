@@ -70,6 +70,25 @@ public class LoanService {
     }
 
 
+    public LoanResponse updateStatus(UUID id, LoanStatus status) {
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new LoanNotFoundException("Loan not found"));
+
+        Account account = loan.getAccount();
+
+        if(account.getStatus() == AccountStatus.BLOCKED ||
+                account.getStatus() == AccountStatus.PENDING ||
+                account.getStatus() == AccountStatus.CLOSED ||
+                account.getStatus() == AccountStatus.FROZEN) {
+            throw new InvalidAccountStatusException("Account status is not eligible for this action");
+        }
+
+        loan.setStatus(status);
+        loanRepository.save(loan);
+        return toLoanResponse(loan);
+    }
+
+
     @Transactional
     public LoanResponse makePayment(UUID id, BigDecimal amount) {
         Loan loan = loanRepository.findById(id)
